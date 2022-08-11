@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import type { RouteProp, ParamListBase } from '@react-navigation/native';
+import { RouteProp, ParamListBase, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Loading from '../screens/components/Auth/Loading'
 import SignUp from '../screens/components/Auth/Signup'
 import Friends from '../screens/components/Friends'
-import Chat from '../screens/components/Chat'
+import ChatList from '../screens/components/Chat'
+import ChatRoom from './components/Chat/chatRoom';
+
+
 import Profile from '../screens/components/Profile' 
 import { Colors } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -52,14 +55,23 @@ const screenOptionsTab = ({route}: {route: RouteProp<ParamListBase, string>}) =>
 const MainComponent = () => {
     
     return (
-        <Tab.Navigator screenOptions={screenOptionsTab}>
+        <Tab.Navigator screenOptions={screenOptionsTab} initialRouteName={"Chat"}>
             <Tab.Screen name="Friends" component={Friends} options={{tabBarLabel: '친구', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
-            <Tab.Screen name="Chat" component={Chat} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
+            <Tab.Screen name="Chat" component={ChatComponent} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
             <Tab.Screen name="Profile" component={Profile} options={{tabBarLabel: '프로필', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
         </Tab.Navigator>
     )
 }
 
+
+const ChatComponent = () => {
+    return(
+        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={"ChatList"}>
+            <Stack.Screen name="ChatList" component={ChatList}/> 
+            <Stack.Screen name="ChatRoom" component={ChatRoom}/>
+        </Stack.Navigator>
+    )
+}
 
 export const RootNavigator = () => {
 

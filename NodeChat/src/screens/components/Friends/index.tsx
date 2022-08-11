@@ -3,29 +3,8 @@ import { SafeAreaView, Text, View, StyleSheet, Alert} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/EvilIcons'
 import PersonBlock from './Person'
+import { userFriendData } from '../../data/userFriendData'
 
-
-const data = [
-    {
-        profileImage: `https://ui-avatars.com/api/?name=gildong`, 
-        id: "gildong", 
-        name: "김길동",
-        comment: "아엠 길동", 
-        backgroudImage: "https://loremflickr.com/g/1080/1920"
-    }, {
-        profileImage: "https://ui-avatars.com/api/?name=dongjae", 
-        id: "dongjae", 
-        name: "전동재",
-        comment: "아엠 동재", 
-        backgroudImage: "https://loremflickr.com/g/1080/1920/paris"
-    }, {
-        profileImage: "https://ui-avatars.com/api/?name=hyeonduck", 
-        id: "hyeonduck", 
-        name: "공현덕",
-        comment: "아엠 현덕", 
-        backgroudImage: "https://loremflickr.com/g/1080/1920/paris"
-    }
-]
 
 
 
@@ -39,10 +18,10 @@ const FriendsComponent: FC<{}> = ( ) => {
                 </View>
             </View>
 
-            <View style={{padding: 10}}/>
+            <View style={{padding: "5%"}}/>
              <FlatList 
                 style={{width: '90%'}}
-                data={data}
+                data={userFriendData}
                 renderItem={({item}) => (
                     <PersonBlock person={item}/>
                  )}

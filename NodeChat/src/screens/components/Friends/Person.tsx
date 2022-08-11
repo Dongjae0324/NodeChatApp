@@ -1,23 +1,10 @@
 import React, {type FC, useState, useCallback}from 'react'
 import { SafeAreaView, Text, View, StyleSheet, Alert, Image, Pressable, Modal, ImageBackground} from 'react-native'
 import Icon from 'react-native-vector-icons/EvilIcons'
-
-type PersonData = {
-    profileImage: string; 
-    id: string, 
-    name: string,
-    comment: string, 
-    backgroudImage: string
-}
+import { PersonProps } from '../../interface'
 
 
-type PersonProps = {
-    person: PersonData
-}
-
-
-
-const PersonBlock: FC<PersonProps> = (props)=> {
+const PersonBlock = ({person}:PersonProps)=> {
     
     const [modal, setModal] = useState(false) 
     
@@ -25,10 +12,10 @@ const PersonBlock: FC<PersonProps> = (props)=> {
         <> 
         <View>
             <Pressable style={styles.container} onPress={()=>{setModal(!modal)}}> 
-                <Image source={{uri: props.person.profileImage}} style={styles.profileImage}/> 
+                <Image source={{uri: person.profileImage}} style={styles.profileImage}/> 
                 <View style={{paddingHorizontal: 10}}> 
-                    <Text style={styles.nameText}>{props.person.name}</Text> 
-                    <Text style={styles.commentText}>{props.person.comment}</Text>
+                    <Text style={styles.nameText}>{person.name}</Text> 
+                    <Text style={styles.commentText}>{person.comment}</Text>
                 </View>
             </Pressable>
         </View>
@@ -40,12 +27,12 @@ const PersonBlock: FC<PersonProps> = (props)=> {
             onRequestClose={()=>{setModal(!modal)}}
         >
               <View style={{flex: 1, alignItems: 'center', width: '100%'}}>
-                <ImageBackground style={styles.backImage} source={{uri: props.person.backgroudImage}}>
+                <ImageBackground style={styles.backImage} source={{uri: person.backgroudImage}}>
                 <View style={{height: "70%"}}/> 
-                <Image source={{uri: props.person.profileImage}} style={styles.profileDetailImage}/> 
-                <Text style={{fontSize: 18, paddingTop: 8, fontWeight: "800"}}>{props.person.name}</Text>
-                <Text>#{props.person.id}</Text>
-                <Text style={{paddingVertical: 20,}}>{props.person.comment}</Text>
+                <Image source={{uri:person.profileImage}} style={styles.profileDetailImage}/> 
+                <Text style={{fontSize: 18, paddingTop: 8, fontWeight: "800"}}>{person.name}</Text>
+                <Text>#{person.id}</Text>
+                <Text style={{paddingVertical: 20,}}>{person.comment}</Text>
                 </ImageBackground>
               </View>
         </Modal> 
