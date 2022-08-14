@@ -18,7 +18,6 @@ const ChatList: FC<{}> = ( ) => {
         navigation.navigate("ChatRoom", props)
     }
 
-    
     const [roomData, setRoomData] = useState<ChatRoomData[]>([])
     const [reload, setReload] = useState<boolean>(false)
 

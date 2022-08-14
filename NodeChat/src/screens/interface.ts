@@ -1,6 +1,7 @@
 export interface PersonData {
     profileImage: string; 
     id: string, 
+    pw: string
     name: string,
     comment: string, 
 }

@@ -80,7 +80,7 @@ export const RootNavigator = () => {
 
     return(
         <Stack.Navigator screenOptions= {{headerShown: false}} initialRouteName={'Loading'}>
-            <Stack.Screen name ="Loading" component={Loading}/>  
+            <Stack.Screen name="Loading" component={Loading}/>  
             <Stack.Screen name="SignUp" component ={SignUp}/> 
             <Stack.Screen name="Home" component={ChatComponent}/>
         </Stack.Navigator>

@@ -4,31 +4,55 @@ import Icon from 'react-native-vector-icons/EvilIcons'
 import {userData} from '../../data/userData'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Input from '../../utils/Input';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { authChange } from '../../../store/actions/auth_actions';
+import axios from 'axios';
 
+const ProfileComponent = (props) => { 
 
-const ProfileComponent: FC<{}> = ( ) => { 
-
-    const [profileImage, setProfileImage] = useState<string>(userData.profileImage)
+    const [profileImage, setProfileImage] = useState<string>(props.User.profileImage)
     const [name, setName] = useState({
         type: "noError", 
-        value: userData.name
+        value: props.User.name
     })
     const [comment, setComment] = useState({
         type: "noError", 
-        value: userData.comment
+        value: props.User.comment
     })
     
     const selectImage = async(options?:any) => {
         try{
             const result = await launchImageLibrary(options)
             const uri = result.assets[0].uri
-
             setProfileImage(uri)
-          
         } 
         catch(e){console.log(e)}
     }
 
+
+    const changeProfile = async() => { 
+        try{
+            const response = await axios.post('http://172.24.241.250:3000/user/update', {
+             id: props.User.id,
+             name: name.value,
+             comment: comment.value,
+             profileImage: profileImage
+            })
+
+            if(response.data.status === "success") {
+                Alert.alert("","프로필 변경에 성공하였습니다", [{text: '확인'}])
+                props.authChange({
+                    name: name.value,
+                    comment: comment.value,
+                    profileImage: profileImage
+                })
+            }
+        } 
+        catch(e){
+
+        }
+    }
     
     return(
         <SafeAreaView style={styles.container}>
@@ -43,8 +67,8 @@ const ProfileComponent: FC<{}> = ( ) => {
                      <Image source={{uri: profileImage}} style={{width: 100, height: 100, borderRadius: 100}}/> 
                 </View>
 
-                <TouchableOpacity style={{width: "90%", alignItems: 'center'}}>
-                    <Text style={{color: 'black', paddingTop: 20, textDecorationLine: 'underline'}}>프로필 변경하기</Text>
+                <TouchableOpacity onPress={()=>{selectImage()}}style={{width: "90%", alignItems: 'center'}}>
+                    <Text style={{color: 'black', paddingTop: 20, textDecorationLine: 'underline'}}>사진 변경하기</Text>
                 </TouchableOpacity>
                 <View style={{height:'6%'}}/> 
                 <Text style={{alignSelf:'flex-start',paddingLeft: 12, paddingBottom:4, color: 'black', fontSize: 15}}>이름</Text>
@@ -54,7 +78,7 @@ const ProfileComponent: FC<{}> = ( ) => {
                 <Input type={comment.type} value={comment.value} onChangeText={(val)=>{setComment({type:"noError", value:val})}}/>
 
                 <View style={{height:'4%'}}/> 
-                <TouchableOpacity style={{width: "100%", alignItems: 'center', borderRadius: 20, backgroundColor: '#52796f', justifyContent:'center'}}>
+                <TouchableOpacity onPress={()=>{changeProfile()}}style={{width: "100%", alignItems: 'center', borderRadius: 20, backgroundColor: '#52796f', justifyContent:'center'}}>
                     <Text style={{color: 'white', fontWeight: '400', padding: 13}}>프로필 변경하기</Text>
                 </TouchableOpacity>
             </View>
@@ -69,4 +93,16 @@ const styles = StyleSheet.create({
     text: {color: 'black', fontSize: 12, },
 
 })
-export default ProfileComponent
+
+function mapStateToProps(state) {
+    return {
+        User: state.User
+    }
+}
+
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({authChange}, dispatch); 
+} 
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent);

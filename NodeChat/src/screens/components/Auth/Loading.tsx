@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 import React, {type FC, useEffect, useState} from 'react'
 import { SafeAreaView, Text, Animated, View, StyleSheet, TouchableOpacity, Alert} from 'react-native'
-
+import {connect} from 'react-redux';
+import {authload} from '../../../store/actions/auth_actions' 
+import {bindActionCreators} from 'redux';
 import Modal from 'react-native-modal'
 import Input from '../../utils/Input'
 
 const AppLogo = require('../../../assets/images/mainLogo.png')
 
-const LoadingComponent: FC<{}> = ( ) => { 
+const LoadingComponent= (props) => { 
 
     const navigation = useNavigation()
     const opacity= new Animated.Value(0)
@@ -22,10 +25,6 @@ const LoadingComponent: FC<{}> = ( ) => {
         value: ""
     })
 
-    const [hasError, setHasError] = useState(false)
-
-    
-
     const onLoad = ( ) => { 
         Animated.timing(opacity,{
             toValue: 1, 
@@ -36,8 +35,30 @@ const LoadingComponent: FC<{}> = ( ) => {
         });
     }
 
-    const validation = (id: string, pw: string) => {
-        
+    const validate = async() => {
+        try{
+           const response = await axios.post('http://172.24.241.250:3000/user/login',{
+            id: pwInput.value,
+            pw: pwInput.value
+           })
+
+           if(response.data.status === "success") {
+              //redux updata 
+              props.authload({
+                id: response.data.profile.id,
+                name: response.data.profile.name,
+                profileImage: response.data.profile.profileImage,
+                comment: response.data.profile.comment
+              })
+              navigation.replace('Home')
+           } else {
+              setIdInput({type: 'error', value: ""})
+              setPwInput({type: 'error', value: ""})
+              Alert.alert("","사용자 정보를 찾을 수 없습니다", [{text: '확인'}])
+           }
+        }catch(e) {
+           console.log(e)   
+        }
     }
     
 
@@ -61,19 +82,16 @@ const LoadingComponent: FC<{}> = ( ) => {
                 
                 <View style={{width:"90%", alignSelf:'center'}}>
                     <View style={{padding:15}}/>
-                    <Input type={idInput.type} value={idInput.value} placeholder={"ID를 입력해주세요"} onChangeText={(val)=>{setIdInput({type:"noError", value:val})}}/>
+                    <Input type={idInput.type} value={idInput.value} placeholder={"ID를 입력해주세요"}  onChangeText={(val)=>{setIdInput({type:"noError", value:val})}}/>
                     <View style={styles.space}/>
-                    <Input type={pwInput.type} value={pwInput.value} placeholder={"비밀번호를 입력해주세요"} onChangeText={(val)=>{setPwInput({type:"noError", value:val})}}/>
+                    <Input type={pwInput.type} value={pwInput.value} placeholder={"비밀번호를 입력해주세요"} secureTextEntry={true} onChangeText={(val)=>{setPwInput({type:"noError", value:val})}}/>
                     <View style={{padding:4}}/>
                     <TouchableOpacity style={{alignItems:'flex-end', paddingRight: 10}} onPress={()=>{navigation.navigate("SignUp"); setModal(false)}}><Text style={{color: 'grey', fontWeight: "700" }}>회원가입</Text></TouchableOpacity>
                     
                     <View style={{padding:15}}/>
-                    {hasError
-                        ? <Text style={{color: "red"}}>일치하는 회원정보가 없습니다</Text>
-                        : <Text style={{color: "black"}}></Text> }
                 </View>
 
-                <TouchableOpacity style={{backgroundColor: '#1b4332', alignItems:'center', width:"90%", alignSelf: 'center', borderRadius: 20}} onPress={()=>navigation.replace("Home")}>
+                <TouchableOpacity onPress={()=>{validate()}} style={{backgroundColor: '#1b4332', alignItems:'center', width:"90%", alignSelf: 'center', borderRadius: 20}} onPress={()=>{validate()}}>
                   <Text style={{paddingVertical: 14, fontWeight: '700', fontSize: 15}}>로그인</Text>
                 </TouchableOpacity>
             </View>
@@ -87,4 +105,16 @@ const styles = StyleSheet.create({
     text: {color: 'black', fontSize: 12},
     space: {padding: 10}
 })
-export default LoadingComponent
+
+function mapStateToProps(state) {
+    return {
+        User: state.User
+    }
+}
+
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({authload}, dispatch); 
+} 
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingComponent);

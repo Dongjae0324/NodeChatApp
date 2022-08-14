@@ -26,14 +26,12 @@ const PersonBlock = ({person}:PersonProps)=> {
             visible={modal}
             onRequestClose={()=>{setModal(!modal)}}
         >
-              <View style={{flex: 1, alignItems: 'center', width: '100%'}}>
-                <ImageBackground style={styles.backImage} source={{uri: person.backgroudImage}}>
+              <View style={{flex: 1, alignItems: 'center', width: '100%', backgroundColor: '#354f52'}}>
                 <View style={{height: "70%"}}/> 
                 <Image source={{uri:person.profileImage}} style={styles.profileDetailImage}/> 
                 <Text style={{fontSize: 18, paddingTop: 8, fontWeight: "800"}}>{person.name}</Text>
                 <Text>#{person.id}</Text>
                 <Text style={{paddingVertical: 20,}}>{person.comment}</Text>
-                </ImageBackground>
               </View>
         </Modal> 
         </>
