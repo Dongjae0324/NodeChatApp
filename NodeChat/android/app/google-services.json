@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "9643024336",
+    "project_id": "nodechat-80f69",
+    "storage_bucket": "nodechat-80f69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9643024336:android:f16ac28a12bfb9c7a7a3d5",
+        "android_client_info": {
+          "package_name": "com.nodechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9643024336-bapqck319f4pb839v6o1errskphlhc9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nodechat",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "9643024336-9jc86bgvh5qsbbscaoerdotdmeh1bac9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0XLMU8RENxb0xfrFO57sm8QlmlZuV88w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9643024336-9jc86bgvh5qsbbscaoerdotdmeh1bac9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

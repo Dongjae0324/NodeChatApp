@@ -3,7 +3,6 @@ export interface PersonData {
     id: string, 
     name: string,
     comment: string, 
-    backgroudImage: string
 }
 
 
@@ -13,17 +12,22 @@ export interface PersonProps {
 
 
 export interface Message {
-    id: string,
-    content: string,
-    createdAt: number
+    title: string, 
+    type: string, 
+    user: string,
+    chat: string
 }
 
-export interface ChatData { 
-    ChatRoomId: string,
-    User: [PersonData]
-    lastMessage: Message
+export interface ChatRoomData { 
+    title: string,
+    owner: string,
 }
 
 export interface ChatProps { 
-    chat: ChatData
+    chat: ChatRoomData,
+    intoChatRoom(props:object): any
 }
+
+
+
+

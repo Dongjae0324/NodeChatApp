@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native'
 import React, {type FC, useEffect, useState} from 'react'
 import { SafeAreaView, Text, Animated, View, StyleSheet, TouchableOpacity, Alert} from 'react-native'
+
 import Modal from 'react-native-modal'
 import Input from '../../utils/Input'
 
 const AppLogo = require('../../../assets/images/mainLogo.png')
-
 
 const LoadingComponent: FC<{}> = ( ) => { 
 
@@ -23,6 +23,8 @@ const LoadingComponent: FC<{}> = ( ) => {
     })
 
     const [hasError, setHasError] = useState(false)
+
+    
 
     const onLoad = ( ) => { 
         Animated.timing(opacity,{
@@ -71,7 +73,7 @@ const LoadingComponent: FC<{}> = ( ) => {
                         : <Text style={{color: "black"}}></Text> }
                 </View>
 
-                <TouchableOpacity style={{backgroundColor: '#1b4332', alignItems:'center', width:"90%", alignSelf: 'center', borderRadius: 20}} onPress={()=>navigation.replace("Main")}>
+                <TouchableOpacity style={{backgroundColor: '#1b4332', alignItems:'center', width:"90%", alignSelf: 'center', borderRadius: 20}} onPress={()=>navigation.replace("Home")}>
                   <Text style={{paddingVertical: 14, fontWeight: '700', fontSize: 15}}>로그인</Text>
                 </TouchableOpacity>
             </View>

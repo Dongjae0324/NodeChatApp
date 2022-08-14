@@ -6,8 +6,6 @@ import PersonBlock from './Person'
 import { userFriendData } from '../../data/userFriendData'
 
 
-
-
 const FriendsComponent: FC<{}> = ( ) => { 
     return(
         <SafeAreaView style={styles.container}>

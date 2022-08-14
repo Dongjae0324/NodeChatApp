@@ -1,36 +1,28 @@
-export const chatData = [
+export const chatListData = [
 
-    {ChatRoomId: "0",
-     User: [
-            {
-            profileImage:  `https://ui-avatars.com/api/?name=gildong`, 
-            id: "gildong", 
-            name: "김길동",
-            comment: "아엠 길동", 
-            backgroudImage: "https://loremflickr.com/g/1080/1920"
-            }
-        ],
+    {title: "안녕하세요",
+     user: '전동재',
      lastMessage: {
-        id:"dsa",
-        content: '어제 뭐했음? ㅋㅋㅋ',
-        createdAt: 2019
+        writer: "공현덕",
+        content: "그러게요 ㅋㅋ", 
+        roomTitle: "안녕하세요" 
      }}, 
 
-
-     {ChatRoomId: "1",
-     User: [
-            {
-            profileImage: `https://ui-avatars.com/api/?name=hyeonduck`, 
-            id: "hyeonduck", 
-            name: "공현덕",
-            comment: "아엠현덕", 
-            backgroudImage: "https://loremflickr.com/g/1080/1920"
-            }
-        ], 
+    {title: "다들 식사하셨나요",
+     user: '전동재',
      lastMessage: {
-        id:"dsa",
-        content: '그게 그렇게 될수도 있지',
-        createdAt: 2013
-     }}
+        writer: "차동혁",
+        content: "아니 그랬어요? ㅋㅋ", 
+        roomTitle: "다들 식사하셨나요" 
+     }}, 
 
     ] 
+
+export const chatRoomData = [
+    {
+        id: '0',
+        content: "오늘뭐했어",
+        createdAt: 2014,
+        user: "동재"
+    }
+]

@@ -7,6 +7,7 @@ import SignUp from '../screens/components/Auth/Signup'
 import Friends from '../screens/components/Friends'
 import ChatList from '../screens/components/Chat'
 import ChatRoom from './components/Chat/chatRoom';
+import CreateChatRoom from './components/Chat/createChatRoom'
 
 
 import Profile from '../screens/components/Profile' 
@@ -47,7 +48,8 @@ const screenOptionsTab = ({route}: {route: RouteProp<ParamListBase, string>}) =>
         const iconName = focused ? Icons[name][0] : Icons[name][1]
         return <Icon name={iconName} color={focusedColor} size={focusedSize}/>
       },
-      tabBarStyle: { height: 60}
+      tabBarStyle: { height: 60},
+      tabBarHideOnKeyboard: true
     }
 }
 
@@ -55,9 +57,9 @@ const screenOptionsTab = ({route}: {route: RouteProp<ParamListBase, string>}) =>
 const MainComponent = () => {
     
     return (
-        <Tab.Navigator screenOptions={screenOptionsTab} initialRouteName={"Chat"}>
+        <Tab.Navigator screenOptions={screenOptionsTab} initialRouteName={"Friends"}>
             <Tab.Screen name="Friends" component={Friends} options={{tabBarLabel: '친구', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
-            <Tab.Screen name="Chat" component={ChatComponent} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
+            <Tab.Screen name="Chat" component={ChatList} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
             <Tab.Screen name="Profile" component={Profile} options={{tabBarLabel: '프로필', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
         </Tab.Navigator>
     )
@@ -66,8 +68,9 @@ const MainComponent = () => {
 
 const ChatComponent = () => {
     return(
-        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={"ChatList"}>
-            <Stack.Screen name="ChatList" component={ChatList}/> 
+        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName={"Main"}>
+            <Stack.Screen name="Main" component={MainComponent}/>
+            <Stack.Screen name='CreateChatRoom' component={CreateChatRoom}/>
             <Stack.Screen name="ChatRoom" component={ChatRoom}/>
         </Stack.Navigator>
     )
@@ -79,7 +82,7 @@ export const RootNavigator = () => {
         <Stack.Navigator screenOptions= {{headerShown: false}} initialRouteName={'Loading'}>
             <Stack.Screen name ="Loading" component={Loading}/>  
             <Stack.Screen name="SignUp" component ={SignUp}/> 
-            <Stack.Screen name="Main" component={MainComponent}/>
+            <Stack.Screen name="Home" component={ChatComponent}/>
         </Stack.Navigator>
     ) 
 }
