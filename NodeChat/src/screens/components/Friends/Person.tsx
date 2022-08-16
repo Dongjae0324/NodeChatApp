@@ -1,7 +1,6 @@
 import React, {type FC, useState, useCallback}from 'react'
 import { SafeAreaView, Text, View, StyleSheet, Alert, Image, Pressable, Modal, ImageBackground} from 'react-native'
-import Icon from 'react-native-vector-icons/EvilIcons'
-import { PersonProps } from '../../interface'
+import { PersonProps } from '../../types'
 
 
 const PersonBlock = ({person}:PersonProps)=> {

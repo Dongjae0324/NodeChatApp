@@ -1,25 +1,29 @@
 
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import React, {type FC, useState} from 'react'
+import React, {type FC, useState, useCallback} from 'react'
 import { SafeAreaView, Text, View, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native'
-import { ChatRoomData } from '../../interface'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../store'
+import { ChatRoomData } from '../../types'
 
 
-const CreateChatRoomComponent: FC<{}> = () => { 
+const CreateChatRoomComponent = () => { 
 
     const [roomName, setroomName] = useState<string>('')
     const navigation = useNavigation() 
+    const user = useSelector<AppState, User>((state) => state.loggedUser)
+    const goMain = useCallback(()=>{navigation.navigate('Main')},[])
 
     const createRoom = async({title, owner}:ChatRoomData) => {
         //방 길이이가 1자리가 넘으면 데이터베이스에 방 저장 이후 방 리스트 화면으로 나가기
         try{ 
-            const makeRoom =  await axios.post('http://172.24.241.250:3000/room', {
+            const makeRoom =  await axios.post('http://localhost:3000/room', {
                                  title: title,
                                  owner: owner
                               })
             if(makeRoom.data.status === "success") {
-                navigation.navigate('Main')
+                goMain()
             } else{
                 Alert.alert("","중복되는 방 이름입니다.",[{text: '확인'}] )
             }
@@ -44,7 +48,7 @@ const CreateChatRoomComponent: FC<{}> = () => {
             /> 
             <View style={{height: 10}}/>
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={()=>{createRoom({title: roomName, owner: '동재'})}}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={()=>{createRoom({title: roomName, owner: user.name})}}>
                 <Text style={{color:'white', fontSize: 15,}}>생성하기</Text>
             </TouchableOpacity>
         </SafeAreaView>

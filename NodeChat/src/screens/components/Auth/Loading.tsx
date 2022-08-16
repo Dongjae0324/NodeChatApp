@@ -1,20 +1,22 @@
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import React, {type FC, useEffect, useState} from 'react'
+import React, {type FC, useEffect, useState, useCallback} from 'react'
 import { SafeAreaView, Text, Animated, View, StyleSheet, TouchableOpacity, Alert} from 'react-native'
-import {connect} from 'react-redux';
-import {authload} from '../../../store/actions/auth_actions' 
-import {bindActionCreators} from 'redux';
 import Modal from 'react-native-modal'
 import Input from '../../utils/Input'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux'
+import { loginAction } from '../../../store'
 
 const AppLogo = require('../../../assets/images/mainLogo.png')
 
-const LoadingComponent= (props) => { 
+const LoadingComponent= () => { 
 
     const navigation = useNavigation()
+    const dispatch = useDispatch() 
+    const goHome = useCallback(()=>{navigation.replace('Home')}, [])
     const opacity= new Animated.Value(0)
-    const [modal, setModal] = useState(false)
+    const [modal, setModal] = useState<boolean>(false)
     const [idInput, setIdInput] = useState({
         type: "noError", 
         value: ""
@@ -31,26 +33,27 @@ const LoadingComponent= (props) => {
             duration: 1500,
             useNativeDriver: true 
         }).start(()=>{ 
-            setModal(!modal)
+            getToken()
         });
     }
 
     const validate = async() => {
         try{
-           const response = await axios.post('http://172.24.241.250:3000/user/login',{
+           const response = await axios.post('http://localhost:3000/user/login',{
             id: pwInput.value,
             pw: pwInput.value
            })
 
            if(response.data.status === "success") {
+              await AsyncStorage.setItem('jwt', response.data.token) //jwt 저장
               //redux updata 
-              props.authload({
+              dispatch(loginAction({
                 id: response.data.profile.id,
                 name: response.data.profile.name,
                 profileImage: response.data.profile.profileImage,
                 comment: response.data.profile.comment
-              })
-              navigation.replace('Home')
+              })) 
+              goHome() 
            } else {
               setIdInput({type: 'error', value: ""})
               setPwInput({type: 'error', value: ""})
@@ -60,7 +63,34 @@ const LoadingComponent= (props) => {
            console.log(e)   
         }
     }
-    
+
+    const getToken = async() => {
+        try{ 
+            const jwt = await AsyncStorage.getItem('jwt')
+            if(!jwt){ 
+                console.log('처음 로그인한 사용자입니다')
+                setModal(!modal)
+            } else {
+                const validity = await axios.post('http://localhost:3000/user/auth',"",{headers: {'Authorization': jwt}})
+                if(validity.data.status === "success") {
+                    dispatch(loginAction({
+                        id: validity.data.userData.id,
+                        name: validity.data.userData.name,
+                        profileImage: validity.data.userData.profileImage,
+                        comment: validity.data.userData.comment
+                      })) 
+                    goHome()
+                } else {
+                    console.log(validity.data.message)
+                    setModal(!modal) //token의 유효기간이 지남. 
+                }  
+           }
+        }
+        catch(e){
+            console.log(e)
+            alert('앱에 오류가 발생했습니다. 다시 실행해주세요')
+        }
+    }
 
     return(
         <SafeAreaView style={styles.container}>
@@ -106,15 +136,5 @@ const styles = StyleSheet.create({
     space: {padding: 10}
 })
 
-function mapStateToProps(state) {
-    return {
-        User: state.User
-    }
-}
 
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({authload}, dispatch); 
-} 
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingComponent);
+export default LoadingComponent;

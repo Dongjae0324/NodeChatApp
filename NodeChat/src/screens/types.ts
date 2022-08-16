@@ -1,4 +1,4 @@
-export interface PersonData {
+export type PersonData = {
     profileImage: string; 
     id: string, 
     pw: string
@@ -7,27 +7,29 @@ export interface PersonData {
 }
 
 
-export interface PersonProps {
+export type PersonProps = {
     person: PersonData
 }
 
 
-export interface Message {
+export type Message = {
     title: string, 
     type: string, 
     user: string,
     chat: string
 }
 
-export interface ChatRoomData { 
+export type ChatRoomData = { 
     title: string,
     owner: string,
 }
 
-export interface ChatProps { 
+export type ChatProps = { 
     chat: ChatRoomData,
     intoChatRoom(props:object): any
 }
+
+
 
 
 

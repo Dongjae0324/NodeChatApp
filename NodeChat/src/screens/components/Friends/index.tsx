@@ -3,17 +3,16 @@ import { SafeAreaView, Text, View, StyleSheet, Alert, TouchableOpacity} from 're
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/EvilIcons'
 import PersonBlock from './Person'
-import { userFriendData } from '../../data/userFriendData'
 import axios from 'axios'
 
 
-const FriendsComponent: FC<{}> = ( ) => { 
+const FriendsComponent = ( ) => { 
 
     const [friendData, setFriendData] = useState([]) 
     const [reload, setReload] = useState<boolean>(false)
 
     useEffect(()=>{
-        axios.get('http://172.24.241.250:3000/user')
+        axios.get('http://localhost:3000/user')
              .then((value) => {
                 setFriendData(value.data.users)
              })

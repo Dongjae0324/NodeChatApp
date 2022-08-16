@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
-import React, {type FC, useState} from 'react'
-import { Alert, TouchableOpacity, SafeAreaView, Text, View, StyleSheet, Touchable} from 'react-native'
+import React, {type FC, useState, useCallback} from 'react'
+import { Alert, TouchableOpacity, SafeAreaView, Text, View, StyleSheet} from 'react-native'
 
 import Input from '../../utils/Input'
 
-const SignUpComponent: FC<{}> = ( ) => { 
+const SignUpComponent = () => { 
 
     const navigation = useNavigation() 
+    const gotoLoading = useCallback(()=>{navigation.navigate('Loading')},[])
 
     const [idInput, setIdInput] = useState({
         type: "noError", 
@@ -26,7 +27,7 @@ const SignUpComponent: FC<{}> = ( ) => {
 
     const register = async() => {
         try{
-            const response = await axios.post('http://172.24.241.250:3000/user/signup', {
+            const response = await axios.post('http://localhost:3000/user/signup', {
                 id: idInput.value,
                 pw: pwInput.value,
                 name: nameInput.value,
@@ -35,7 +36,7 @@ const SignUpComponent: FC<{}> = ( ) => {
 
             if (response.data.status === "success") {
                alert('회원가입에 성공하였습니다')
-               navigation.navigate('Loading')
+               gotoLoading()
             } else { 
                alert('중복된 아이디의 유저가 있습니다') 
                setIdInput({type: 'error', value: idInput.value})

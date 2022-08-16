@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { RouteProp, ParamListBase, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -58,9 +59,9 @@ const MainComponent = () => {
     
     return (
         <Tab.Navigator screenOptions={screenOptionsTab} initialRouteName={"Friends"}>
-            <Tab.Screen name="Friends" component={Friends} options={{tabBarLabel: '친구', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
-            <Tab.Screen name="Chat" component={ChatList} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
-            <Tab.Screen name="Profile" component={Profile} options={{tabBarLabel: '프로필', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10}}}/> 
+            <Tab.Screen name="Friends" component={Friends} options={{tabBarLabel: '친구', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10, ...Platform.select({ios:{paddingBottom: 0, fontSize: 1}})}}}/> 
+            <Tab.Screen name="Chat" component={ChatList} options={{tabBarLabel: '채팅', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10, ...Platform.select({ios:{paddingBottom: 0, fontSize: 1}})}}}/> 
+            <Tab.Screen name="Profile" component={Profile} options={{tabBarLabel: '프로필', tabBarLabelStyle: {fontSize: 10, color: 'black', paddingBottom: 10, ...Platform.select({ios:{paddingBottom: 0, fontSize: 1}})}}}/> 
         </Tab.Navigator>
     )
 }

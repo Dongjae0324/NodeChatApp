@@ -1,17 +1,14 @@
 import { useNavigation } from '@react-navigation/native'
 import React, {type FC, useEffect, useState} from 'react'
-import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet, Alert, FlatList, Touchable} from 'react-native'
+import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet, Alert, FlatList, Touchable, Platform} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { chatListData, chatRoomData } from '../../data/chatData'
-import { userFriendData } from '../../data/userFriendData'
 import ChatBlock from './chatBlock'
-import { io } from 'socket.io-client'
-import { ChatRoomData } from '../../interface'
+import { ChatRoomData } from '../../types'
 import axios from 'axios'
 
 
 
-const ChatList: FC<{}> = ( ) => { 
+const ChatList = () => { 
  
     const navigation = useNavigation()
     const intoChatRoom = (props: object) => {
@@ -22,7 +19,7 @@ const ChatList: FC<{}> = ( ) => {
     const [reload, setReload] = useState<boolean>(false)
 
     useEffect(()=>{ 
-       axios.get('http://172.24.241.250:3000/')
+       axios.get('http://localhost:3000/')
        .then((array)=>{
            setRoomData(array.data.rooms)
        })
@@ -42,7 +39,7 @@ const ChatList: FC<{}> = ( ) => {
             <View style={{flexDirection: 'row', width: '90%', alignItems: 'center'}}>
               <Text style={{color:'black', alignSelf: 'center', fontWeight: "600"}}>채팅방 목록</Text>
               <View style={{width: 20}}/> 
-              <TouchableOpacity onPress={()=>{setReload(!reload)}} style={{backgroundColor: '#283618', paddingHorizontal: 10, borderRadius: 20}}><Text style={{color: 'white'}}>새로고침</Text></TouchableOpacity>
+              <TouchableOpacity onPress={()=>{setReload(!reload)}} style={{backgroundColor: '#283618', paddingHorizontal: 10, borderRadius: 20, ...Platform.select({ios: {paddingVertical: 4}})}}><Text style={{color: 'white'}}>새로고침</Text></TouchableOpacity>
             </View> 
 
             <View style={{padding: "2%"}}/>
